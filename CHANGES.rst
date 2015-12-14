@@ -10,6 +10,9 @@ Version 0.2.0
   ``X`` and an array of sequence ``lengths``. This allowed to use the HMMs
   as part of scikit-learn ``Pipeline``. The idea was shamelessly plugged
   from ``seqlearn`` package by @larsmans. See issue #29 on GitHub.
+- Removed ``params`` and ``init_params`` from internal methods. Accepting
+  these as arguments was redundant and confusing, because both available
+  as instance attributes.
 - Implemented ``ConvergenceMonitor``, a class for convergence diagnostics.
   The idea is due to @mvictor212.
 - Added support for non-fully connected architectures, e.g. left-right HMMs.
@@ -20,6 +23,9 @@ Version 0.2.0
 - Changed the models to do input validation lazily as suggested by the
   scikit-learn guidelines.
 - Removed deprecated re-exports from ``hmmlean.hmm``.
+- Fixed M-step for ``GMMHMM``, which incorrectly expeced ``GMM.score_samples``
+  to return log-probabilities. See PR #4 on GitHub for discussion. Thanks to
+  @mvictor212 and @michcio1234.
 
 Version 0.1.1
 -------------

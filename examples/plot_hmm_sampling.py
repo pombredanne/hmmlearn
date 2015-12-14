@@ -1,7 +1,6 @@
 """
-==================================
-Demonstration of sampling from HMM
-==================================
+Sampling from HMM
+-----------------
 
 This script shows how to sample points from a Hiden Markov Model (HMM):
 we use a 4-components with specified mean and covariance.
@@ -9,7 +8,6 @@ we use a 4-components with specified mean and covariance.
 The plot show the sequence of observations generated with the transitions
 between them. We can see that, as specified by our transition matrix,
 there are no transition between component 1 and 3.
-
 """
 print(__doc__)
 
@@ -19,11 +17,11 @@ import matplotlib.pyplot as plt
 from hmmlearn import hmm
 
 ##############################################################
-# Prepare parameters for a 3-components HMM
+# Prepare parameters for a 4-components HMM
 # Initial population probability
 startprob = np.array([0.6, 0.3, 0.1, 0.0])
 # The transition matrix, note that there are no transitions possible
-# between component 1 and 4
+# between component 1 and 3
 transmat = np.array([[0.7, 0.2, 0.0, 0.1],
                      [0.3, 0.5, 0.2, 0.0],
                      [0.0, 0.3, 0.5, 0.2],

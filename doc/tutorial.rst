@@ -1,11 +1,9 @@
 .. _tutorial:
 
-========
 Tutorial
 ========
 
 .. currentmodule:: hmmlearn
-
 
 ``hmmlearn`` implements the Hidden Markov Models (HMMs).
 The HMM is a generative probabilistic model, in which a sequence of observable
@@ -15,9 +13,9 @@ The transitions between hidden states are assumed to have the form of a
 (first-order) Markov chain. They can be specified by the start probability
 vector :math:`\boldsymbol{\pi}` and a transition probability matrix
 :math:`\mathbf{A}`. The emission probability of an observable can be any
-distribution with parameters :math:`\boldsymbol{{\theta}}` conditioned on the
+distribution with parameters :math:`\boldsymbol{\theta}` conditioned on the
 current hidden state. The HMM is completely determined by
-:math:`\boldsymbol{\pi, \mathbf{A}}` and :math:`\boldsymbol{{\theta}}`.
+:math:`\boldsymbol{\pi}`, :math:`\mathbf{A}` and :math:`\boldsymbol{\theta}`.
 
 There are three fundamental problems for HMMs:
 
@@ -38,21 +36,29 @@ algorithm, known as the Baum-Welch algorithm.
 
 .. topic:: References:
 
-  [Rabiner89] `A tutorial on hidden Markov models and selected applications in speech recognition <http://www.cs.ubc.ca/~murphyk/Bayes/rabiner.pdf>`_
-  Lawrence, R. Rabiner, 1989
+  .. [Rabiner89] Lawrence R. Rabiner "A tutorial on hidden Markov models and
+                 selected applications in speech recognition",
+                 Proceedings of the IEEE 77.2, pp. 257-286, 1989.
+  .. [Bilmes98] Jeff A. Bilmes, "A gentle tutorial of the EM algorithm and its
+                application to parameter estimation for Gaussian mixture and
+                hidden Markov models.", 1998.
 
+Available models
+----------------
 
-Using HMM
-=========
+.. autosummary::
+   :nosignatures:
 
-Classes in this module include :class:`~hmm.MultinomialHMM`,
-:class:`~hmm.GaussianHMM`, and :class:`~hmm.GMMHMM`. They implement HMM with
-emission probabilities determined by multinomial distributions, Gaussian
-distributions and mixtures of Gaussian distributions.
+   hmm.GaussianHMM
+   hmm.GMMHMM
+   hmm.MultinomialHMM
+
+:ref:`Read on <customizing>` for details on how to implement an HMM with a
+custom emission probability.
 
 
 Building HMM and generating samples
-------------------------------------
+-----------------------------------
 
 You can build an HMM instance by passing the parameters described above to the
 constructor. Then, you can generate samples from the HMM by calling
@@ -83,7 +89,7 @@ be defined as follows::
 
 .. topic:: Examples:
 
- * :ref:`example_auto_examples_plot_hmm_sampling.py`
+ * :ref:`sphx_glr_auto_examples_plot_hmm_sampling.py`
 
 Training HMM parameters and inferring the hidden states
 -------------------------------------------------------
@@ -109,7 +115,7 @@ in ``remodel`` will have a different order than those in the generating model.::
     GaussianHMM(algorithm='viterbi',...
     >>> Z2 = remodel.predict(X)
 
-.. note:: Monitoring convergence
+.. topic:: Monitoring convergence
 
    The number of EM-algorithm iteration is upper bounded by the ``n_iter``
    parameter. The training proceeds until ``n_iter`` steps were performed or the
@@ -127,14 +133,22 @@ in ``remodel`` will have a different order than those in the generating model.::
 
 .. topic:: Examples:
 
- * :ref:`example_auto_examples_plot_hmm_stock_analysis.py`
+ * :ref:`sphx_glr_auto_examples_plot_hmm_stock_analysis.py`
+
+.. _customizing:
 
 Implementing HMMs with custom emission probabilities
 ----------------------------------------------------
 
 If you want to implement other emission probability (e.g. Poisson), you have to
-implement a new HMM class by inheriting the :class:`~base._BaseHMM` and
-overriding the methods `__init__`, `_compute_log_likelihood`,
-`_set` and `_get` for additional parameters,
-`_initialize_sufficient_statistics`, `_accumulate_sufficient_statistics` and
-`_do_mstep`.
+subclass :class:`~base._BaseHMM` and override the following methods
+
+.. autosummary::
+
+   base._BaseHMM._init
+   base._BaseHMM._check
+   base._BaseHMM._generate_sample_from_state
+   base._BaseHMM._compute_log_likelihood
+   base._BaseHMM._initialize_sufficient_statistics
+   base._BaseHMM._accumulate_sufficient_statistics
+   base._BaseHMM._do_mstep
